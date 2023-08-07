@@ -1,0 +1,301 @@
+{%extends 'store/base.html'%}
+{%load static%}
+{%block title%}Fashion Store{%endblock%}
+{%block body%}
+<section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-5">
+                    <div class="sidebar">
+                        <div class="sidebar__item">
+                            <h4>Price</h4>
+                            <div class="price-range-wrap">
+<!--                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"-->
+<!--                                    data-min="10" data-max="540">-->
+<!--                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>-->
+<!--                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>-->
+<!--                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>-->
+<!--                                </div>-->
+                                <div class="price-picker">
+<!--                                    range-slider-->
+                                    <form action="{%url 'filter_products_by_price'%}" method="post" id="price-filter-form">
+                                        {% csrf_token %}
+                                    <div class="price-input">
+
+
+                            <div id="slider-range" class="price-filter-range" name="rangeInput" style="width:80%"></div>
+
+                            <div style="margin-bottom:10px">
+                            <input type="number" min=0 max="9900" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" name="min_price"/>
+                            <input type="number" min=0 max="10000" oninput="validity.valid||(value='10000');" id="max_price" class="price-range-field" name="max_price"/>
+                            </div>
+
+                             <button type="submit" class="btn btn-primary" >Apply</button>
+
+
+
+
+
+<!--                                        <input type="text" id="minamount" name="min_price">-->
+<!--                                        <input type="text" id="maxamount" name="max_price">-->
+<!--                                        <button class="btn" type="submit">Apply</button>-->
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="sidebar__item sidebar__item__color&#45;&#45;option">-->
+<!--                            <h4>Colors</h4>-->
+<!--                            <div class="sidebar__item__color sidebar__item__color&#45;&#45;white">-->
+<!--                                <label for="white">-->
+<!--                                    White-->
+<!--                                    <input type="radio" id="white">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__color sidebar__item__color&#45;&#45;gray">-->
+<!--                                <label for="gray">-->
+<!--                                    Gray-->
+<!--                                    <input type="radio" id="gray">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__color sidebar__item__color&#45;&#45;red">-->
+<!--                                <label for="red">-->
+<!--                                    Red-->
+<!--                                    <input type="radio" id="red">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__color sidebar__item__color&#45;&#45;black">-->
+<!--                                <label for="black">-->
+<!--                                    Black-->
+<!--                                    <input type="radio" id="black">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__color sidebar__item__color&#45;&#45;blue">-->
+<!--                                <label for="blue">-->
+<!--                                    Blue-->
+<!--                                    <input type="radio" id="blue">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__color sidebar__item__color&#45;&#45;green">-->
+<!--                                <label for="green">-->
+<!--                                    Green-->
+<!--                                    <input type="radio" id="green">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="sidebar__item">-->
+<!--                            <h4>Popular Size</h4>-->
+<!--                            <div class="sidebar__item__size">-->
+<!--                                <label for="large">-->
+<!--                                    Large-->
+<!--                                    <input type="radio" id="large">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__size">-->
+<!--                                <label for="medium">-->
+<!--                                    Medium-->
+<!--                                    <input type="radio" id="medium">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__size">-->
+<!--                                <label for="small">-->
+<!--                                    Small-->
+<!--                                    <input type="radio" id="small">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="sidebar__item__size">-->
+<!--                                <label for="tiny">-->
+<!--                                    Tiny-->
+<!--                                    <input type="radio" id="tiny">-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="sidebar__item">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-7">
+
+
+                    <div class="row">
+                        {%for product in product_list%}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="{{product.image.url}}">
+                                    <ul class="product__item__pic__hover">
+                                        {%if user.is_authenticated%}
+                                        <li><a href="{% url 'add_item_to_wish_list' product_id=product.uid %}"><i class="fa fa-heart"></i></a></li>
+                                        {%else%}
+                                        <li><a href="{% url 'login'%}"><i class="fa fa-heart"></i></a></li>
+                                        {%endif%}
+
+                                        <li><a href="{%url 'product_details' product_id=product.uid %}"><i class="fa fa-info-circle"></i></a></li>
+<!--                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>-->
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="#">{{product.product_name}}</a></h6>
+                                    <h5>${{product.price}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        {%endfor%}
+
+                    </div>
+                    {%if product_list.has_other_pages%}
+                    <div class="product__pagination">
+                        {%if product_list.has_previous%}
+                        <a href="?page={{product_list.previous_page_number}}"><i class="fa fa-long-arrow-left"></i></a>
+                        {%else%}
+                        <a href="#"><i class="fa fa-long-arrow-left"></i></a>
+                        {%endif%}
+                        {%for i in product_list.paginator.page_range%}
+	                    {%if product_list.number == i%}
+                        <a href="#">{{i}}</a>
+                        {%else%}
+                        <a href="?page={{i}}">{{i}}</a>
+                        {%endif%}
+	                    {%endfor%}
+                        {%if product_list.has_next%}
+                        <a href="?page={{product_list.next_page_number}}"><i class="fa fa-long-arrow-right"></i></a>
+                        {%endif%}
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<script>
+      $('#price-range-submit').hide();
+
+$("#min_price,#max_price").on('change', function () {
+
+  $('#price-range-submit').show();
+
+  var min_price_range = parseInt($("#min_price").val());
+
+  var max_price_range = parseInt($("#max_price").val());
+
+  if (min_price_range > max_price_range) {
+    $('#max_price').val(min_price_range);
+  }
+
+  $("#slider-range").slider({
+    values: [min_price_range, max_price_range]
+  });
+
+});
+
+
+$("#min_price,#max_price").on("paste keyup", function () {
+  $('#price-range-submit').show();
+
+  var min_price_range = parseInt($("#min_price").val());
+
+  var max_price_range = parseInt($("#max_price").val());
+
+  if(min_price_range == max_price_range){
+
+    max_price_range = min_price_range + 100;
+
+    $("#min_price").val(min_price_range);
+    $("#max_price").val(max_price_range);
+  }
+
+  $("#slider-range").slider({
+    values: [min_price_range, max_price_range]
+  });
+
+});
+
+
+$(function () {
+  $("#slider-range").slider({
+    range: true,
+    orientation: "horizontal",
+    min: 0,
+    max: 10000,
+    values: [0, 10000],
+    step: 100,
+
+    slide: function (event, ui) {
+      if (ui.values[0] == ui.values[1]) {
+        return false;
+      }
+
+      $("#min_price").val(ui.values[0]);
+      $("#max_price").val(ui.values[1]);
+    }
+  });
+
+  $("#min_price").val($("#slider-range").slider("values", 0));
+  $("#max_price").val($("#slider-range").slider("values", 1));
+
+});
+
+$("#slider-range,#price-range-submit").click(function () {
+
+  var min_price = $('#min_price').val();
+  var max_price = $('#max_price').val();
+
+  $("#searchResults").text("Here List of products will be shown which are cost between " + min_price  +" "+ "and" + " "+ max_price + ".");
+});
+    </script>
+
+    <style>
+.price-range-block {
+    margin:30px;
+}
+.sliderText{
+    width:42%;
+    margin-bottom:30px;
+    border-bottom: 1px solid red;
+    padding: 10px 0 10px 0px;
+    font-weight:bold;
+}
+.ui-slider-horizontal {
+    height: .6em;
+}
+.ui-slider-horizontal {
+    margin-bottom: 15px;
+    width:40%;
+}
+.ui-widget-header {
+    background: #3FE331;
+}
+.price-range-search {
+    width:41%;
+    background-color: #f9f9f9;
+    border: 1px solid #6e6666;
+    min-width: 40%;
+    display: inline-block;
+    height: 32px;
+    border-radius: 5px;
+    float: left;
+    margin-bottom:20px;
+    font-size:16px;
+}
+.price-range-field{
+    width:20%;
+    min-width: 30%;
+    background-color:#f9f9f9;
+    border: 1px solid #6e6666;
+    color: black;
+    font-family: myFont;
+    font: normal 14px Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+    height:40px;
+    padding:5px;
+}
+.search-results-block{
+  position: relative;
+  display: block;
+  clear: both;
+}
+
+
+    </style>
+{%endblock%}
